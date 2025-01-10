@@ -14,18 +14,21 @@ import { Ref, ref, toRef, watch } from "vue";
 import { EditorEvent } from "@leafer-in/editor";
 import History from "./History";
 import { IAppProps } from "./types";
+import { COLOR, ENUM_LOCAL_KEY, ENUM_LOCAL_VALUE } from "./constant";
 
 class DrawingBoard {
   private leaferInstance: null | App = null;
   private rootDom: null | HTMLElement = null;
   private isSelect = false;
-  private onChange: (json: IUIJSONData) => void = () => {};
+  private onChange: (json: IUIJSONData) => void = () => { };
   private history: null | History = null;
 
   public tools: null | Tools = null;
   public selectedGraphics: Ref<null | any> = ref(null);
   public clearGraphicsQueue = new Map<ILeaf, ILeaf>();
   public readonly leaferInstanceReadonly: null | App = null;
+
+  public isSun = ref(window.localStorage.getItem(ENUM_LOCAL_KEY.THEME) === ENUM_LOCAL_VALUE.SUN || !window.localStorage.getItem(ENUM_LOCAL_KEY.THEME));
 
   constructor({ domId, onChange, config }: IAppProps) {
     this.rootDom = document.getElementById(domId);
@@ -50,16 +53,44 @@ class DrawingBoard {
         this.setCursor();
       }
     );
+
+    watch(
+      () => this.isSun.value,
+      (val) => this.onChangeTheme(val),
+      {
+        immediate: true,
+      }
+    )
   }
 
   private initApp = (view: HTMLElement) => {
     const app = new App({
       view,
+      fill: COLOR.WHITE,
       editor: {},
     });
 
     return app;
   };
+
+  private root: HTMLElement = document.documentElement;
+  public setIsSun = (v: boolean) => {
+    this.isSun.value = v;
+  }
+
+  private onChangeTheme(val: boolean) {
+    this.leaferInstance.fill = val ? COLOR.WHITE : COLOR.BLACK;
+
+    window.localStorage.setItem(ENUM_LOCAL_KEY.THEME, val ? ENUM_LOCAL_VALUE.SUN : ENUM_LOCAL_VALUE.MOON);
+
+    this.root.style.setProperty('--text-color', val ? COLOR.BLACK : COLOR.WHITE);
+
+    this.root.style.setProperty('--title-box-shadow', val ? COLOR.SUN_TITLE_BOX_SHADOW : COLOR.MOON_TITLE_BOX_SHADOW);
+
+    this.tools.setTheme(val);
+    this.tools.toolbarActiveIndex.value = 0;
+    this.selectedGraphics.value = null;
+  }
 
   private initEvent = (app: App) => {
     app.on(DragEvent.DOWN, this.mousedown);
@@ -116,7 +147,7 @@ class DrawingBoard {
       const { x: offsetX, y: offsetY } = e.getPage();
       const [width, height] = [offsetX - x, offsetY - y];
 
-      if(graphics.onMousemove) {
+      if (graphics.onMousemove) {
         graphics.onMousemove(e, this, { width, height })
       } else {
         const scaleX = width < 0 ? -1 : 1,

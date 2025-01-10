@@ -25,7 +25,7 @@ export default defineComponent({
         {
           toolBarOptions.map((item, index) => {
             return (
-              <div className={`toolbar-item ${getClass.value(index)}`} key={index} title={item.title} onClick={() => clickHandler(index)}>
+              <div className={`toolbar-item ${getClass.value(index)} theme-icon`} key={index} title={item.title} onClick={() => clickHandler(index)}>
                 <ElIcon>
                   <item.icon />
                 </ElIcon>

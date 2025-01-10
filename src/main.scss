@@ -2,3 +2,23 @@
     margin: 0;
     padding: 0;
 }
+
+:root {
+    --active-bg-color: #3f85ed;
+    --text-color: #000;
+    --title-box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.text {
+    color: var(--text-color);
+}
+
+.theme-icon {
+    .el-icon {
+        fill: var(--text-color);
+
+        path {
+            fill: var(--text-color);
+        }
+    }
+}

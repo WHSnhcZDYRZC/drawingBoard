@@ -34,7 +34,7 @@ const Index = ({ drawingBoard }: IPluginProps) => {
                 LAYER_LIST.map(Layer => {
                     return (
                         <span
-                            className={getActiveLayer(Layer.type)}
+                            className={`theme-icon ${getActiveLayer(Layer.type)}`}
                             key={Layer.type}
                             title={Layer.title}
                             onClick={() => {

@@ -1,0 +1,15 @@
+.theme-container {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+
+    .el-switch__label--right:not(.is-active) {
+        .el-icon {
+            fill: var(--text-color);
+
+            path {
+                fill: var(--text-color);
+            }
+        }
+    }
+}

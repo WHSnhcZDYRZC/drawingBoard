@@ -18,6 +18,7 @@ import LineSegmentBackgroundColorPlugin from "../components/plugins/LineSegmentB
 import { IAppProps, IToolBarItem } from "./types";
 import TextColor from "../components/plugins/TextColor";
 import TextSize from "../components/plugins/TextSize";
+import { COLOR } from "./constant";
 
 export const INITIAL_WIDTH = 0;
 export const INITIAL_HEIGHT = 0;
@@ -61,7 +62,7 @@ export const toolBarOptions: IToolBarItem[] = [
     title: "矩形",
     strokeWidth: 2,
     stroke: "rgba(0, 0, 0, 1)",
-    fill: "#fff",
+    fill: COLOR.WHITE,
     createdFactory(x: number, y: number) {
       return new Rect({
         name: "rectTool",
@@ -87,7 +88,7 @@ export const toolBarOptions: IToolBarItem[] = [
     title: "椭圆",
     strokeWidth: 2,
     stroke: "rgba(0, 0, 0, 1)",
-    fill: "#fff",
+    fill: COLOR.WHITE,
     createdFactory(x: number, y: number) {
       return new Ellipse({
         name: "ellipseTool",
@@ -235,6 +236,18 @@ class Tools {
 
   public getActiveGraphics() {
     return toolBarOptions[this.toolbarActiveIndex.value];
+  }
+
+  public setTheme(value) {
+    toolBarOptions.forEach((item) => {
+      if (item.stroke) {
+        item.stroke = value ? COLOR.BLACK : COLOR.WHITE
+      }
+
+      if (item.name === 'textTool') {
+        item.fill = value ? COLOR.BLACK : COLOR.WHITE
+      }
+    })
   }
 }
 

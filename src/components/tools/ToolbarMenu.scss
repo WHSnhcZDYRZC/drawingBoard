@@ -20,7 +20,7 @@
         gap: 30px;
 
         .on {
-            background-color: #3f85ed;
+            background-color: var(--active-bg-color);
             border-radius: 5px;
 
             path {

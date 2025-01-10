@@ -16,11 +16,15 @@
     }
 
     .active {
-        background-color: #3f85ed;
+        background-color: var(--active-bg-color);
         border-radius: 5px;
 
-        path {
+        .el-icon {
             fill: #ffffff;
+
+            path {
+                fill: #ffffff;
+            }
         }
     }
 }
